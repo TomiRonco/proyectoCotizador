@@ -1,12 +1,13 @@
 
 import FormCalculator from './components/formCalculator/FormCalculator';
+import DashBoard from './components/dashboard/DashBoard';
 
 import './App.css';
 
 function App() {
   return (
-    <div className='h-100'>
-      <FormCalculator/>
+    <div>
+      <DashBoard/>
     </div>
   );
 }
