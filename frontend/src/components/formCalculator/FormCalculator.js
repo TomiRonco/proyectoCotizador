@@ -12,6 +12,30 @@ const FormCalculator = () => {
     setDate(event.target.value);
   };
 
+  const calculateButtonHandler = async () => {
+    try {
+      const data = { amount, date };
+
+      const response = await fetch("/api/calculate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("No se pudo obtener respuesta de la API.");
+      }
+
+      const resultado = await response.json();
+
+      console.log(resultado);
+    } catch (error){
+      console.error("Error al realizar la solicitud:", error);
+    }
+  };
+
   return (
     <form className="row w-35">
       <div className="col-6">
@@ -32,7 +56,11 @@ const FormCalculator = () => {
         />
       </div>
       <div className="col-12 d-flex justify-content-center align-items-center">
-        <button type="button" className="btn btn-primary mt-3">
+        <button
+          type="button"
+          className="btn btn-primary mt-3"
+          onClick={calculateButtonHandler}
+        >
           Calculator
         </button>
       </div>
