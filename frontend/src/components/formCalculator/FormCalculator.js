@@ -32,12 +32,6 @@ const FormCalculator = () => {
         throw new Error("No se pudo obtener respuesta de la API.");
       }
 
-<<<<<<< HEAD
-      const resultado = await response.json();
-
-      console.log(resultado);
-    } catch (error){
-=======
       const resultados = await response.json();
 
       setResultadoDolar(resultados.monto_dolar);
@@ -47,7 +41,6 @@ const FormCalculator = () => {
 
       console.log(resultados);
     } catch (error) {
->>>>>>> 6297b1eb5d933f56f7602187728f838cc4059c33
       console.error("Error al realizar la solicitud:", error);
     }
   };
