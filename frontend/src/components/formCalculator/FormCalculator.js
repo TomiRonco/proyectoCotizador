@@ -1,47 +1,28 @@
 import React, { useState } from "react";
+import UseApi from "./hook/UseApi";
+
+const InitialValues = {
+  amount: "",
+  date: "",
+};
 
 const FormCalculator = () => {
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
-  const [resultadoDolar, setResultadoDolar] = useState(null);
-  const [resultadoUVA, setResultadoUVA] = useState(null);
-  const [resultadoIPC, setResultadoIPC] = useState(null);
-  const [resultadoPromedio, setResultadoPromedio] = useState(null);
+  const [data, setData] = useState(InitialValues);
 
   const amountHandler = (event) => {
-    setAmount(event.target.value);
+    setData({ ...data, amount: event.target.value });
   };
 
   const dateHandler = (event) => {
-    setDate(event.target.value);
+    setData({ ...data, date: event.target.value });
   };
 
   const calculateButtonHandler = async () => {
     try {
-      const data = { amount, date };
-
-      const response = await fetch("/api/calculate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("No se pudo obtener respuesta de la API.");
-      }
-
-      const resultados = await response.json();
-
-      setResultadoDolar(resultados.monto_dolar);
-      setResultadoUVA(resultados.monto_uva);
-      setResultadoIPC(resultados.monto_ipc);
-      setResultadoPromedio(resultados.monto_promedio);
-
-      console.log(resultados);
+      const { amount, date } = data;
+      await UseApi(amount, date);
     } catch (error) {
-      console.error("Error al realizar la solicitud:", error);
+      console.log("Error al llamar a la API", error);
     }
   };
 
@@ -53,7 +34,7 @@ const FormCalculator = () => {
           type="number"
           placeholder="$ Amount"
           onChange={amountHandler}
-          value={amount}
+          value={data.amount}
         />
       </div>
       <div className="col-6">
@@ -61,7 +42,7 @@ const FormCalculator = () => {
           className="form-control"
           type="date"
           onChange={dateHandler}
-          value={date}
+          value={data.date}
         />
       </div>
       <div className="col-12 d-flex justify-content-center align-items-center">
@@ -72,15 +53,6 @@ const FormCalculator = () => {
         >
           Calculator
         </button>
-        {resultadoDolar !== null && (
-          <div>Resultado en Dólar: {resultadoDolar}</div>
-        )}
-        {resultadoUVA !== null && <div>Resultado en UVA: {resultadoUVA}</div>};
-        {resultadoIPC !== null && <div>Resultado en IPC: {resultadoIPC}</div>};
-        {resultadoPromedio !== null && (
-          <div>Resultado promedio: {resultadoPromedio}</div>
-        )}
-        ;
       </div>
     </form>
   );
