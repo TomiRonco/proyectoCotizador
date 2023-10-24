@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import UseApi from "./hook/UseApi";
+import Result from "../result/Result";
 
 const InitialValues = {
-  amount: "",
+  amount: 0,
   date: "",
+  results: null,
 };
 
 const FormCalculator = () => {
@@ -20,7 +22,8 @@ const FormCalculator = () => {
   const calculateButtonHandler = async () => {
     try {
       const { amount, date } = data;
-      await UseApi(amount, date);
+      const resultados = await UseApi(amount, date);
+      setData({ ...data, results: resultados });
     } catch (error) {
       console.log("Error al llamar a la API", error);
     }
@@ -54,6 +57,7 @@ const FormCalculator = () => {
           Calculator
         </button>
       </div>
+      {data.results && data.results.monto_en_dolares && <Result results={data.results} />}
     </form>
   );
 };
